@@ -13,17 +13,17 @@ export default function usePageSnap(ref, { duration = 650 } = {}) {
     const onWheel = (e) => {
       if (anim) { e.preventDefault(); return; }
 
-      const dir = Math.sign(e.deltaY);      // 1 вниз, -1 вверх
+      const dir = Math.sign(e.deltaY);  
       if (!dir) return;
 
-      e.preventDefault();                   // отключаем нативный рывок
+      e.preventDefault();          
       const current = pageIndex();
       const total = Math.ceil(el.scrollHeight / el.clientHeight) - 1;
       const target = clamp(current + (dir > 0 ? 1 : -1), 0, total);
 
       anim = true;
       el.scrollTo({ top: target * el.clientHeight, behavior: "smooth" });
-      setTimeout(() => { anim = false; }, duration); // подстрой под себя
+      setTimeout(() => { anim = false; }, duration); 
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });

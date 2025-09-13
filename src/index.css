@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== анимации, используемые как utility-классы ===== */
-
-/* вспышка-линия (если вдруг используешь) */
+/* flash-line (optional utility if you ever need a quick sweep) */
 @keyframes flash-line {
   0%   { transform: translateX(-100%); opacity: 1; }
   90%  { transform: translateX(0%);    opacity: 1; }
@@ -12,20 +10,27 @@
 }
 .animate-flash-line { animation: flash-line 1.2s ease-out forwards; }
 
-/* мигающий курсор */
+/* blinking caret (used after typing finished) */
 @keyframes blink {
   0%,49%  { opacity: 1; }
   50%,100%{ opacity: 0; }
 }
 .animate-blink { animation: blink 1s steps(1, end) infinite; }
 
-/* скрыть полосы прокрутки по желанию */
+/* smooth "fade + slide up" entrance */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-up 700ms cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+/* hide scrollbars (optional) */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ===== фоновые слои hero ===== */
-
-/* минимальная виньетка: очень лёгкий свет в центре + затемнение краёв */
+/* minimal vignette background for Hero */
 .bg-vignette-min {
   background:
     radial-gradient(120% 80% at 50% 55%,
@@ -37,7 +42,7 @@
       rgba(0,0,0,0.45) 100%);
 }
 
-/* деликатный «горизонтальный дым»: больше света у линии, быстро затухает вниз */
+/* subtle horizontal glow behind the line */
 .horizon-soft {
   background: linear-gradient(
     to bottom,

@@ -1,7 +1,6 @@
 // src/App.jsx
 import { useRef } from "react";
-import usePageSnap from "./Hooks/usePageSnap"; // путь поправь, если файл лежит в другом месте
-
+import usePageSnap from "./Hooks/usePageSnap";
 import Hero from "./Components/Hero";
 import About from "./Components/About";
 import Projects from "./Components/Projects";
@@ -9,7 +8,7 @@ import Contact from "./Components/Contact";
 
 export default function App() {
   const containerRef = useRef(null);
-  usePageSnap(containerRef, { duration: 900 }); // 500–800 мс обычно ок
+  usePageSnap(containerRef, { duration: 900 });
 
   return (
     <main
