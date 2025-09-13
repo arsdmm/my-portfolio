@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== анимации, используемые как utility-классы ===== */
+
+/* вспышка-линия (если вдруг используешь) */
+@keyframes flash-line {
+  0%   { transform: translateX(-100%); opacity: 1; }
+  90%  { transform: translateX(0%);    opacity: 1; }
+  100% { opacity: 0; }
+}
+.animate-flash-line { animation: flash-line 1.2s ease-out forwards; }
+
+/* мигающий курсор */
+@keyframes blink {
+  0%,49%  { opacity: 1; }
+  50%,100%{ opacity: 0; }
+}
+.animate-blink { animation: blink 1s steps(1, end) infinite; }
+
+/* скрыть полосы прокрутки по желанию */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ===== фоновые слои hero ===== */
+
+/* минимальная виньетка: очень лёгкий свет в центре + затемнение краёв */
+.bg-vignette-min {
+  background:
+    radial-gradient(120% 80% at 50% 55%,
+      rgba(255,255,255,0.05) 0%,
+      rgba(255,255,255,0.02) 18%,
+      rgba(255,255,255,0.00) 32%),
+    radial-gradient(100% 100% at 50% 50%,
+      rgba(0,0,0,0.00) 60%,
+      rgba(0,0,0,0.45) 100%);
+}
+
+/* деликатный «горизонтальный дым»: больше света у линии, быстро затухает вниз */
+.horizon-soft {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.10) 0%,
+    rgba(255,255,255,0.04) 45%,
+    rgba(0,0,0,0)         100%
+  );
+}
