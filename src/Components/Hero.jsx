@@ -10,7 +10,7 @@ export default function Hero() {
   const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
-    const startDelay = 1600; // when to start typing (synced with the line)
+    const startDelay = 2800; // when to start typing (synced with the line)
     const speed = 70;        // ms per character
 
     let intervalId;
@@ -58,7 +58,7 @@ export default function Hero() {
       </div>
 
       {/* name typing + cursor */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-8 z-30 text-center">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 ml-3 md:ml-4 -translate-y-12 md:-translate-y-20   z-30 text-center">
         {/* width is fixed by an invisible ghost so the line doesn't shift while typing */}
         <div className="relative inline-block">
           <span
@@ -85,7 +85,7 @@ export default function Hero() {
         {/* subtitle (appears 1s after typing has started) */}
         <p
           className={
-            "mt-4 text-lg md:text-xl text-gray-300 " +
+            "mt-20 text-lg md:text-xl text-gray-300 " +
             (showInfo ? "animate-fade-up [animation-delay:0.05s]" : "opacity-0 translate-y-4")
           }
         >
@@ -107,11 +107,13 @@ export default function Hero() {
       {/* header */}
       <header
         className="absolute top-0 left-0 w-full flex justify-center gap-8
-                   text-lg font-medium py-6 text-white
-                   opacity-0 animate-header-in z-30"
+                  py-6
+                  font-sans font-normal text-base md:text-lg text-gray-300   /* ← same as subtitle */
+                  opacity-0 animate-header-in z-30"
       >
-        <a href="#projects" className="hover:text-gray-400">Projects</a>
         <a href="#about"    className="hover:text-gray-400">About</a>
+        <a href="#skills" className="hover:text-gray-400">Skills</a>
+        <a href="#projects" className="hover:text-gray-400">Projects</a>
         <a href="#contact"  className="hover:text-gray-400">Contact</a>
       </header>
     </section>

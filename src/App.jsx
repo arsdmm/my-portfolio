@@ -3,6 +3,7 @@ import { useRef } from "react";
 import usePageSnap from "./Hooks/usePageSnap";
 import Hero from "./Components/Hero";
 import About from "./Components/About";
+import Skills from "./Components/Skills"
 import Projects from "./Components/Projects";
 import Contact from "./Components/Contact";
 
@@ -17,6 +18,7 @@ export default function App() {
     >
       <section className="h-screen snap-start"><Hero /></section>
       <section id="about" className="h-screen snap-start"><About /></section>
+      <section id="skills" className="h-screen snap-start"><Skills/></section>
       <section id="projects" className="h-screen snap-start"><Projects /></section>
       <section id="contact" className="h-screen snap-start"><Contact /></section>
     </main>
