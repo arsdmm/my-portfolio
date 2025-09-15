@@ -52,3 +52,27 @@
   );
 }
 
+/* ---- Wipe (page-to-page) -------------------------------------------------- */
+/* right→left (next page) */
+@keyframes wipe-out-rtl {
+  from { clip-path: polygon(0 0,100% 0,100% 100%,0 100%); }  /* full */
+  to   { clip-path: polygon(0 0,0 0,0 100%,0 100%); }        /* none */
+}
+@keyframes wipe-in-rtl {
+  from { clip-path: polygon(100% 0,100% 0,100% 100%,100% 100%); } /* zero-width at right */
+  to   { clip-path: polygon(0 0,100% 0,100% 100%,0 100%); }       /* full */
+}
+.animate-wipe-out-rtl { animation: wipe-out-rtl 900ms cubic-bezier(.22,.61,.36,1) forwards; }
+.animate-wipe-in-rtl  { animation: wipe-in-rtl  900ms cubic-bezier(.22,.61,.36,1) forwards; }
+
+/* left→right (prev page) */
+@keyframes wipe-out-ltr {
+  from { clip-path: polygon(0 0,100% 0,100% 100%,0 100%); }
+  to   { clip-path: polygon(100% 0,100% 0,100% 100%,100% 100%); }
+}
+@keyframes wipe-in-ltr {
+  from { clip-path: polygon(0 0,0 0,0 100%,0 100%); }
+  to   { clip-path: polygon(0 0,100% 0,100% 100%,0 100%); }
+}
+.animate-wipe-out-ltr { animation: wipe-out-ltr 900ms cubic-bezier(.22,.61,.36,1) forwards; }
+.animate-wipe-in-ltr  { animation: wipe-in-ltr  900ms cubic-bezier(.22,.61,.36,1) forwards; }
