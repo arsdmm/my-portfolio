@@ -1,15 +1,7 @@
 // src/Components/Skills.jsx
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
-// Module-level flag: play intro once per page lifetime
-let SKILLS_INTRO_PLAYED = false;
-
-export default function Skills({
-  hideContent = false,   // скрываем всё в wipe-оверлее
-  playIntro = false,     // сигнал от App: “после wipe можно играть интро”
-  renderStatic = false,  // статичный рендер без анимаций
-}) {
+export default function Skills() {
   const items = [
     { name: "SQL",     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
     { name: "Oracle",  logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" },
@@ -32,41 +24,11 @@ export default function Skills({
     "from-[#0c0f16] to-[#0a0d13]",
   ];
 
-  // show = контент видим (не во время wipe)
-  const show = !hideContent;
-
-  // shouldAnimate = запускаем интро, если:
-  // - контент видим,
-  // - это не статичный рендер,
-  // - App дал сигнал playIntro,
-  // - и мы ещё не играли интро в этой вкладке.
-  const shouldAnimate = show && !renderStatic && playIntro && !SKILLS_INTRO_PLAYED;
-
-  // как только решили играть интро — помечаем, что оно уже было
-  useEffect(() => {
-    if (shouldAnimate) {
-      SKILLS_INTRO_PLAYED = true;
-    }
-  }, [shouldAnimate]);
-
-  // задержка старта после wipe (в секундах)
-  const DELAY_S = 1.5;
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: 10 },
-    show:   { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut", delay: DELAY_S } },
-  };
-
   const gridVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: {
-        delay: DELAY_S,          // старт сетки через 1.5s
-        when: "beforeChildren",
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
+      transition: { when: "beforeChildren", staggerChildren: 0.08, delayChildren: 0.1 },
     },
   };
 
@@ -76,75 +38,66 @@ export default function Skills({
   };
 
   return (
-    <section className="relative h-screen snap-start bg-black text-white overflow-hidden">
-      {/* В оверлее — полностью прозрачно */}
-      <div className={`${show ? "opacity-100" : "opacity-0"} transition-opacity duration-150`}>
-        {/* Title */}
-        <motion.h2
-          variants={titleVariants}
-          initial={shouldAnimate ? "hidden" : false}
-          animate="show"
-          className="pt-6 pb-4 text-3xl font-semibold text-center"
-        >
-          Skills
-        </motion.h2>
+    <section className="w-full px-4 md:px-8 mx-auto max-w-6xl">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.5 }}
+        className="text-3xl font-semibold mb-8 text-center"
+      >
+        Skills
+      </motion.h2>
 
-        <div className="mx-auto w-screen max-w-none px-4 md:px-8">
-          {/* Grid */}
-          <motion.div
-            variants={gridVariants}
-            initial={shouldAnimate ? "hidden" : false}
-            animate="show"
-            className="
-              grid gap-5 md:gap-6
-              h-[calc(100svh-140px)] min-h-[520px]
-              grid-cols-2 grid-rows-6
-              md:grid-cols-3 md:grid-rows-4
-              lg:grid-cols-4 lg:grid-rows-3
-              xl:grid-cols-6 xl:grid-rows-2
-            "
-          >
-            {items.map((item, i) => {
-              const bg = palettes[i % palettes.length];
+      <motion.div
+        variants={gridVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.35 }}
+        className="
+          grid gap-5 md:gap-6
+          h-[60vh] min-h-[420px]
+          grid-cols-2 grid-rows-6
+          md:grid-cols-3 md:grid-rows-4
+          lg:grid-cols-4 lg:grid-rows-3
+          xl:grid-cols-6 xl:grid-rows-2
+        "
+      >
+        {items.map((item, i) => {
+          const bg = palettes[i % palettes.length];
+          return (
+            <motion.div
+              key={item.name}
+              variants={cardVariants}
+              className="
+                relative rounded-3xl border border-white/10 overflow-hidden
+                shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
+                transition-[transform,filter] duration-300
+                hover:brightness-110 hover:-translate-y-0.5
+                flex items-center justify-center
+              "
+              title={item.name}
+            >
+              <div className={`absolute inset-0 bg-gradient-to-b ${bg}`} />
+              <div className="absolute inset-0 bg-[radial-gradient(85%_60%_at_50%_40%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)] pointer-events-none" />
+              <div className="absolute inset-0 rounded-3xl ring-1 ring-white/10 pointer-events-none" />
 
-              return (
-                <motion.div
-                  key={item.name}
-                  variants={cardVariants}
-                  // если интро не нужно — показываем без анимации
-                  initial={shouldAnimate ? undefined : false}
-                  animate={shouldAnimate ? undefined : "show"}
-                  className="
-                    relative rounded-3xl border border-white/10 overflow-hidden
-                    shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
-                    transition-[transform,filter] duration-300
-                    hover:brightness-110 hover:-translate-y-0.5
-                    flex items-center justify-center
-                  "
-                  title={item.name}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-b ${bg}`} />
-                  <div className="absolute inset-0 bg-[radial-gradient(85%_60%_at_50%_40%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)] pointer-events-none" />
-                  <div className="absolute inset-0 rounded-3xl ring-1 ring-white/10 pointer-events-none" />
-
-                  <div className="relative z-10 text-center select-none">
-                    <img
-                      src={item.logo}
-                      alt={item.name}
-                      className="mx-auto h-10 w-10 md:h-12 md:w-12 object-contain drop-shadow-sm mb-3"
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
-                    />
-                    <span className="tracking-[0.2em] text-[0.7rem] md:text-xs text-slate-200">
-                      {item.name.toUpperCase()}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </div>
-      </div>
+              <div className="relative z-10 text-center select-none">
+                <img
+                  src={item.logo}
+                  alt={item.name}
+                  className="mx-auto h-10 w-10 md:h-12 md:w-12 object-contain drop-shadow-sm mb-3"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+                <span className="tracking-[0.2em] text-[0.7rem] md:text-xs text-slate-200">
+                  {item.name.toUpperCase()}
+                </span>
+              </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
     </section>
   );
 }
