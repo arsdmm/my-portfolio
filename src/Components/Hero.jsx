@@ -16,7 +16,7 @@ export default function Hero({ onNav, playedRef }) {
   useEffect(() => {
     if (alreadyPlayed) return;
 
-    const startDelay = 2800; // when to start typing (synced with the line)
+    const startDelay = 3000; // when to start typing (synced with the line)
     const speed = 70;        // ms per character
 
     let intervalId;

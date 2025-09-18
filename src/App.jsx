@@ -7,58 +7,97 @@ import Skills from "./Components/Skills";
 import Projects from "./Components/Projects";
 
 export default function App() {
-  // remember that Hero intro has already been played in this session
+  // Hero: помним, что интро уже играло (используется внутри Hero)
   const heroPlayedRef = useRef(false);
 
-  // sections as data: we render exactly one page + two copies inside the wipe overlay
+  // Секции как данные: в node прокидываем onNav и опции рендера
   const sections = [
-    { id: "home",     node: (onNav) => <Hero onNav={onNav} playedRef={heroPlayedRef} /> },
-    { id: "about",    node: () => <About /> },
-    { id: "skills",   node: () => <Skills /> },
-    { id: "projects", node: () => <Projects /> },
+    {
+      id: "home",
+      node: (onNav, opts) => (
+        <Hero
+          onNav={onNav}
+          playedRef={heroPlayedRef}
+          hideContent={opts?.hideContent}
+          playIntro={opts?.playIntro}
+          renderStatic={opts?.renderStatic}
+        />
+      ),
+    },
+    {
+      id: "about",
+      node: (_onNav, opts) => (
+        <About
+          hideContent={opts?.hideContent}
+          playIntro={opts?.playIntro}
+          renderStatic={opts?.renderStatic}
+        />
+      ),
+    },
+    {
+      id: "skills",
+      node: (_onNav, opts) => (
+        <Skills
+          hideContent={opts?.hideContent}
+          playIntro={opts?.playIntro}
+          renderStatic={opts?.renderStatic}
+        />
+      ),
+    },
+    {
+      id: "projects",
+      node: (_onNav, opts) => (
+        <Projects
+          hideContent={opts?.hideContent}
+          playIntro={opts?.playIntro}
+          renderStatic={opts?.renderStatic}
+        />
+      ),
+    },
   ];
 
   const [index, setIndex] = useState(0);
 
-  // wipe overlay state
+  // Состояние wipe-перелистывания
   const [wipe, setWipe] = useState({
     active: false,
-    dir: 1,            // 1 = next (right→left wipe), -1 = prev (left→right wipe)
+    dir: 1,         // 1 = next (право→лево), -1 = prev (лево→право)
     fromIdx: 0,
     toIdx: 0,
-    duration: 1500,     // ms — adjust for speed
+    duration: 1500, // мс — скорость перелистывания
   });
 
-  // go to a specific index using the wipe transition
+  // Переход с wipe
   const goToIndexWithWipe = (nextIdx) => {
     if (nextIdx === index || nextIdx < 0 || nextIdx >= sections.length) return;
 
     const dir = nextIdx > index ? 1 : -1;
     setWipe({ active: true, dir, fromIdx: index, toIdx: nextIdx, duration: wipe.duration });
 
-    // after the animation completes, switch the "live" section and hide overlay
+    // После окончания анимации — переключаем живую секцию
     window.setTimeout(() => {
       setIndex(nextIdx);
-      // keep URL in sync for deep links
+
       const id = sections[nextIdx].id;
       if (id && window.location.hash.slice(1) !== id) {
         history.replaceState(null, "", `#${id}`);
       }
+
       setWipe((w) => ({ ...w, active: false }));
     }, wipe.duration);
   };
 
-  // wheel → strictly page-by-page with wipe (no free scrolling in between)
+  // Колесо мыши: листаем страница-за-страницей
   useEffect(() => {
-    let animating = false;
+    let lock = false;
 
     const onWheel = (e) => {
       const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
       if (Math.abs(delta) < 2) return;
       e.preventDefault();
 
-      if (animating || wipe.active) return;
-      animating = true;
+      if (lock || wipe.active) return;
+      lock = true;
 
       if (delta > 0) {
         goToIndexWithWipe(Math.min(index + 1, sections.length - 1));
@@ -66,15 +105,14 @@ export default function App() {
         goToIndexWithWipe(Math.max(index - 1, 0));
       }
 
-      // lock until the wipe finishes
-      window.setTimeout(() => { animating = false; }, wipe.duration + 50);
+      window.setTimeout(() => { lock = false; }, wipe.duration + 50);
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
   }, [index, wipe.active, wipe.duration]);
 
-  // keyboard arrows/PageUp/PageDown also navigate
+  // Клавиатура ←/→, PageUp/PageDown
   useEffect(() => {
     const onKey = (e) => {
       if (wipe.active) return;
@@ -91,15 +129,8 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [index, wipe.active]);
 
-  // deep link on first load (no animation)
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    const idx = sections.findIndex((s) => s.id === hash);
-    if (idx >= 0) setIndex(idx);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  // nav handler passed into Hero header
+  // Навигация из Hero (клики в хедере)
   const onNav = (id) => {
     const nextIdx = sections.findIndex((s) => s.id === id);
     if (nextIdx >= 0) goToIndexWithWipe(nextIdx);
@@ -107,32 +138,46 @@ export default function App() {
 
   return (
     <>
-      {/* Live page: render exactly one section (full-screen) */}
+      {/* Живая страница: всегда одна секция на экране */}
       <main className="relative h-[100svh] w-screen overflow-hidden bg-black text-white">
-        <section className="absolute inset-0">{sections[index].node(onNav)}</section>
+        <section className="absolute inset-0">
+          {sections[index].node(onNav, {
+            hideContent: false,          // контент не скрываем на живом экране
+            playIntro: !wipe.active,     // после завершения wipe секция может играть интро
+            renderStatic: wipe.active,   // если вдруг активно wipe (редко), рендерим статично
+          })}
+        </section>
       </main>
 
-      {/* Wipe overlay: two layers with complementary clip-path animations */}
+      {/* Wipe-overlay: две «копии» секций с клип-анимациями */}
       {wipe.active && (
         <div className="fixed inset-0 z-[60] pointer-events-none">
-          {/* OUTGOING layer */}
+          {/* Уходящая секция — показываем статично */}
           <div
             className={`absolute inset-0 will-change-[clip-path] ${
               wipe.dir > 0 ? "animate-wipe-out-rtl" : "animate-wipe-out-ltr"
             }`}
             style={{ animationDuration: `${wipe.duration}ms` }}
           >
-            {sections[wipe.fromIdx].node(onNav)}
+            {sections[wipe.fromIdx].node(onNav, {
+              hideContent: false,  // видно
+              playIntro: false,    // без интро
+              renderStatic: true,  // статично
+            })}
           </div>
 
-          {/* INCOMING layer */}
+          {/* Входящая секция — полностью скрыта в оверлее */}
           <div
             className={`absolute inset-0 will-change-[clip-path] ${
               wipe.dir > 0 ? "animate-wipe-in-rtl" : "animate-wipe-in-ltr"
             }`}
             style={{ animationDuration: `${wipe.duration}ms` }}
           >
-            {sections[wipe.toIdx].node(onNav)}
+            {sections[wipe.toIdx].node(onNav, {
+              hideContent: true,   // ВАЖНО: прячем контент, чтобы не «подглядывал»
+              playIntro: false,    // интро не играем в оверлее
+              renderStatic: true,  // статично
+            })}
           </div>
         </div>
       )}
