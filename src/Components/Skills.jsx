@@ -17,87 +17,91 @@ export default function Skills() {
     { name: "Git",     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
   ];
 
-  const palettes = [
-    "from-[#0b0f14] to-[#0b0f14]",
-    "from-[#0c1413] to-[#0b1110]",
-    "from-[#131010] to-[#0e0b0b]",
-    "from-[#0c0f16] to-[#0a0d13]",
-  ];
-
-  const gridVariants = {
-    hidden: { opacity: 0 },
+  const grid = {
+    hidden: { opacity: 0, y: 10 },
     show: {
       opacity: 1,
-      transition: { when: "beforeChildren", staggerChildren: 0.08, delayChildren: 0.1 },
+      y: 0,
+      transition: { when: "beforeChildren", staggerChildren: 0.06, delayChildren: 0.05, duration: 0.45, ease: "easeOut" },
     },
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24, scale: 0.96 },
-    show:   { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  const card = {
+    hidden: { opacity: 0, y: 14, scale: 0.98 },
+    show:   { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
   };
 
   return (
-    <section className="w-full px-4 md:px-8 mx-auto max-w-6xl">
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.5 }}
-        className="text-3xl font-semibold mb-8 text-center"
-      >
-        Skills
-      </motion.h2>
+    <section id="skills" className="relative w-full bg-black text-white">
+      {/* нежная виньетка как в About */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_35%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)]" />
 
-      <motion.div
-        variants={gridVariants}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.35 }}
-        className="
-          grid gap-5 md:gap-6
-          h-[60vh] min-h-[420px]
-          grid-cols-2 grid-rows-6
-          md:grid-cols-3 md:grid-rows-4
-          lg:grid-cols-4 lg:grid-rows-3
-          xl:grid-cols-6 xl:grid-rows-2
-        "
-      >
-        {items.map((item, i) => {
-          const bg = palettes[i % palettes.length];
-          return (
+      <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
+        {/* header row */}
+        <div className="mb-8 flex items-center gap-4">
+          <span className="text-slate-400">/</span>
+          <h2 className="text-3xl md:text-4xl font-semibold">Skills</h2>
+          <div className="h-px flex-1 bg-gradient-to-r from-white/40 via-white/20 to-transparent" />
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="text-slate-300 leading-relaxed max-w-3xl mb-8"
+        >
+          Tools I reach for when turning raw data into clear, actionable stories.
+          Calm visuals, reproducible pipelines, and a bias toward maintainable choices.
+        </motion.p>
+
+        {/* сетка карточек */}
+        <motion.div
+          variants={grid}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.35 }}
+          className="
+            grid gap-4 md:gap-5
+            grid-cols-2 sm:grid-cols-3 lg:grid-cols-4
+          "
+        >
+          {items.map((it) => (
             <motion.div
-              key={item.name}
-              variants={cardVariants}
+              key={it.name}
+              variants={card}
               className="
-                relative rounded-3xl border border-white/10 overflow-hidden
-                shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
-                transition-[transform,filter] duration-300
-                hover:brightness-110 hover:-translate-y-0.5
-                flex items-center justify-center
+                relative rounded-2xl border border-white/10
+                bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
+                overflow-hidden isolate
+                group
               "
-              title={item.name}
             >
-              <div className={`absolute inset-0 bg-gradient-to-b ${bg}`} />
-              <div className="absolute inset-0 bg-[radial-gradient(85%_60%_at_50%_40%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)] pointer-events-none" />
-              <div className="absolute inset-0 rounded-3xl ring-1 ring-white/10 pointer-events-none" />
+              {/* внутренний мягкий градиент */}
+              <div className="absolute inset-0 bg-[radial-gradient(85%_60%_at_50%_40%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)]" />
 
-              <div className="relative z-10 text-center select-none">
+              {/* плавная подсветка по ховеру */}
+              <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[conic-gradient(from_180deg_at_50%_50%,rgba(255,255,255,0.18)_0deg,rgba(255,255,255,0)_120deg,rgba(255,255,255,0)_240deg,rgba(255,255,255,0.18)_360deg)]" />
+
+              <div className="relative z-10 flex flex-col items-center justify-center px-4 py-7">
                 <img
-                  src={item.logo}
-                  alt={item.name}
-                  className="mx-auto h-10 w-10 md:h-12 md:w-12 object-contain drop-shadow-sm mb-3"
+                  src={it.logo}
+                  alt={it.name}
+                  className="h-10 w-10 md:h-12 md:w-12 object-contain drop-shadow-sm mb-3 transition-transform duration-300 group-hover:scale-[1.05]"
                   loading="lazy"
                   referrerPolicy="no-referrer"
                 />
-                <span className="tracking-[0.2em] text-[0.7rem] md:text-xs text-slate-200">
-                  {item.name.toUpperCase()}
+                <span className="text-[0.72rem] md:text-xs tracking-[0.18em] text-slate-200">
+                  {it.name.toUpperCase()}
                 </span>
               </div>
             </motion.div>
-          );
-        })}
-      </motion.div>
+          ))}
+        </motion.div>
+
+        {/* тонкий разделитель снизу */}
+        <div className="mt-12 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+      </div>
     </section>
   );
 }

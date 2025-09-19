@@ -7,20 +7,19 @@ import Projects from "./Components/Projects";
 export default function App() {
   return (
     <main className="bg-black text-white">
-      {/* Каждая секция тянется минимум на высоту экрана */}
-      <section id="home" className="min-h-screen flex items-center">
+      <section id="home" className="min-h-screen flex items-center justify-center">
         <Hero />
       </section>
 
-      <section id="about" className="min-h-screen flex items-center">
+      <section id="about" className="min-h-screen flex items-center justify-center">
         <About />
       </section>
 
-      <section id="skills" className="min-h-screen flex items-center">
+      <section id="skills" className="min-h-screen flex items-center justify-center">
         <Skills />
       </section>
 
-      <section id="projects" className="min-h-screen flex items-center">
+      <section id="projects" className="min-h-screen flex items-center justify-center">
         <Projects />
       </section>
     </main>
