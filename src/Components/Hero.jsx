@@ -2,15 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-// Full string (used both for typing and to reserve final width to prevent shifting)
-const FULL_NAME_LINE = "Hi! \u00A0 I'm \u00A0 D m y t r o \u00A0 L i t v i n o v";
+// Use real words so wrapping happens at spaces (not between letters)
+const FULL_NAME_LINE = "Hi!\u00A0 I'm\u00A0 Dmytro Litvinov";
 
 export default function Hero() {
-  // play intro only once per session (module-level alt: useRef works across re-renders)
   const playedRef = useRef(false);
   const alreadyPlayed = playedRef.current;
 
-  // state seeded from alreadyPlayed to avoid re-animating on remount
   const [typed, setTyped]       = useState(alreadyPlayed ? FULL_NAME_LINE : "");
   const [started, setStarted]   = useState(alreadyPlayed);
   const [done, setDone]         = useState(alreadyPlayed);
@@ -19,8 +17,8 @@ export default function Hero() {
   useEffect(() => {
     if (alreadyPlayed) return;
 
-    const startDelay = 3000; // when to start typing (synced with the line)
-    const speed = 70;        // ms per character
+    const startDelay = 3000;
+    const speed = 70;
 
     let intervalId;
     const t0 = setTimeout(() => {
@@ -32,12 +30,11 @@ export default function Hero() {
         if (i >= FULL_NAME_LINE.length) {
           clearInterval(intervalId);
           setDone(true);
-          playedRef.current = true; // mark as played once
+          playedRef.current = true;
         }
       }, speed);
     }, startDelay);
 
-    // subtitle + bio (and button) appear 1s after typing starts
     const tInfo = setTimeout(() => setShowInfo(true), startDelay + 1000);
 
     return () => {
@@ -49,13 +46,13 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen bg-black text-white overflow-hidden w-full">
-      {/* white light background */}
+      {/* background */}
       <div className="pointer-events-none absolute inset-0 z-0 bg-vignette-min" />
 
-      {/* star (subtle horizontal glow behind the line) */}
+      {/* subtle horizon glow */}
       <div className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 w-full h-[12vh] z-10 horizon-soft opacity-50 blur-xl" />
 
-      {/* a line: animated on first visit; static at top on subsequent visits */}
+      {/* line animation (unchanged) */}
       {alreadyPlayed ? (
         <div
           className="absolute left-0 top-1/2 w-full h-[2px] z-20"
@@ -75,28 +72,20 @@ export default function Hero() {
         </div>
       )}
 
-      {/* name typing + cursor + subtitle + bio + email button */}
+      {/* center block */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 ml-3 md:ml-4 -translate-y-12 md:-translate-y-20 z-30 text-center w-full px-6">
-        {/* reserve width so the typed line doesn't shift */}
-        <div className="relative inline-block">
-          <span
-            aria-hidden
-            className="invisible font-mono text-2xl md:text-4xl tracking-[0.35em] whitespace-nowrap"
-          >
-            {FULL_NAME_LINE}
-          </span>
-          <span className="absolute inset-0">
-            <span className="font-mono text-2xl md:text-4xl tracking-[0.35em] text-gray-300 whitespace-nowrap">
-              {typed}
-              {started && (
-                <span
-                  className={
-                    "ml-1 inline-block h-[1.2em] w-px align-middle bg-gray-400 " +
-                    (done ? "animate-blink" : "")
-                  }
-                />
-              )}
-            </span>
+        {/* typed line — wraps by word; cursor stays attached */}
+        <div className="relative inline-block min-h-[2.6rem] md:min-h-[3.4rem] pl-4 md:pl-6">
+          <span className="font-mono text-2xl md:text-4xl tracking-[0.5em] md:tracking-[0.6em] text-gray-300 whitespace-normal break-words">
+            {typed}
+            {started && (
+              <span
+                className={
+                  "ml- 0 inline-block h-[1.2em] w-px align-middle bg-gray-400 " +
+                  (done ? "animate-blink" : "")
+                }
+              />
+            )}
           </span>
         </div>
 
@@ -121,7 +110,7 @@ export default function Hero() {
           where I turn messy data into meaningful decisions and minimal, easy-to-read visuals.
         </p>
 
-        {/* Email me button */}
+        {/* button */}
         <motion.a
           href="mailto:dmlitvinov99@gmail.com"
           aria-label="Email me at dmlitvinov99@gmail.com"
@@ -140,10 +129,9 @@ export default function Hero() {
         >
           Let's connect
         </motion.a>
-
       </div>
 
-      {/* simple header with anchor links */}
+      {/* header (unchanged) */}
       <header
         className={
           "absolute top-0 left-0 w-full flex justify-center gap-8 py-6 " +
