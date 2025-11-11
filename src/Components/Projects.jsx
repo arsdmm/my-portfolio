@@ -1,53 +1,45 @@
-// src/Components/Projects.jsx
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Projects() {
   return (
     <section id="projects" className="relative w-full bg-black text-white">
-      {/* общая виньетка */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_35%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)]" />
 
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28 space-y-12">
-        {/* header */}
         <div className="mb-2 flex items-center gap-4">
           <span className="text-slate-400">/</span>
           <h2 className="text-3xl md:text-4xl font-semibold">Projects</h2>
           <div className="h-px flex-1 bg-gradient-to-r from-white/40 via-white/20 to-transparent" />
         </div>
 
-        {/* mini-hero (листай/переключай) */}
         <MiniHero />
 
-        {/* сетка проектов */}
         <ProjectsGrid />
       </div>
     </section>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Mini hero — лёгкий пейджер с drag по X, стрелки и точки-пагинация. */
-/* ------------------------------------------------------------------ */
 function MiniHero() {
   const slides = [
     {
       k: "01",
-      title: "Operational dashboards",
+      title: "Customer Segmentation",
       text:
-        "From raw tables to crisp visuals: semantic models, DAX / SQL, and fast, no-nonsense UX.",
+        "RFM scoring, behavioral clustering, and revenue-focused insights that strengthen retention and targeting.",
     },
     {
       k: "02",
-      title: "Data pipelines",
+      title: "Time-Series Forecasting",
       text:
-        "ETL/ELT with Python + SQL. Incremental loads, validation, and reproducible runs.",
+        "Clean daily pipelines, baseline benchmarking, and SARIMA models delivering reliable forward-looking forecasts.",
     },
     {
       k: "03",
-      title: "Decision support",
+      title: "Data Quality Intelligence",
       text:
-        "AB tests, uplift, forecasting. Clear narratives that lead to actions — not just charts.",
+        "Rule engines, automated thresholds, and Power BI dashboards that expose issues before they hit production.",
     },
   ];
 
@@ -55,8 +47,21 @@ function MiniHero() {
   const controls = useAnimation();
   const dirRef = useRef(1);
 
+  const hero = {
+    hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: 0.55, ease: "easeOut", when: "beforeChildren", staggerChildren: 0.06 }
+    }
+  };
+  const piece = {
+    hidden: { opacity: 0, y: 10 },
+    show:   { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+  };
+
   const goTo = async (next) => {
-    const last = slides.length - 1;
     const newIdx = (next + slides.length) % slides.length;
     dirRef.current = next > index ? 1 : -1;
 
@@ -77,11 +82,17 @@ function MiniHero() {
   };
 
   return (
-    <div className="
-      relative overflow-hidden rounded-3xl border border-white/10
-      bg-white/[0.03] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
-      px-6 md:px-10 py-10 md:py-12
-    ">
+    <motion.div
+      variants={hero}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.3 }}
+      className="
+        relative overflow-hidden rounded-3xl border border-white/10
+        bg-white/[0.03] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
+        px-6 md:px-10 py-10 md:py-12
+      "
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_70%_0%,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0)_50%)]" />
 
       <motion.div
@@ -95,9 +106,9 @@ function MiniHero() {
       >
         <motion.div
           animate={controls}
-          className="grid md:grid-cols-[1fr_.9fr] gap-8 items-center"
+          className="grid gap-8 items-center"
         >
-          <div>
+          <motion.div variants={piece}>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-[11px] tracking-wide text-slate-300">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-300/80" />
               FEATURED • {slides[index].k}
@@ -105,18 +116,10 @@ function MiniHero() {
             <h3 className="mt-4 text-2xl md:text-3xl font-semibold">
               {slides[index].title}
             </h3>
-            <p className="mt-3 text-slate-300 leading-relaxed max-w-2xl">
+            <p className="mt-3 text-slate-300 leading-relaxed max-w-3xl">
               {slides[index].text}
             </p>
-          </div>
-
-          <div className="
-            aspect-[16/9] w-full rounded-2xl border border-white/10
-            bg-gradient-to-b from-white/5 to-transparent
-            shadow-[0_10px_50px_rgba(0,0,0,0.35)]
-          ">
-            <div className="h-full w-full rounded-2xl bg-[radial-gradient(80%_80%_at_60%_20%,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0)_55%)]" />
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
 
@@ -149,58 +152,33 @@ function MiniHero() {
           />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
+
+
 function ProjectsGrid() {
   const projects = [
     {
-      title: "Sales Performance Dashboard",
+      title: "Customer Segmentation (RFM Analysis)",
       desc:
-        "End-to-end Power BI model with DAX measures, row-level security, and near-real-time refresh.",
-      stack: ["Power BI", "DAX", "Azure SQL"],
-      repo: "#",
-      demo: "#",
+        "Python-based RFM segmentation pipeline. Full cleaning, quantile scoring, and behavioral clustering with clear business insights.",
+      stack: ["Python", "Pandas", "Matplotlib"],
+      demo: "https://github.com/arsdmm/RFM-clustering-of-retail.git",
     },
     {
-      title: "Marketing Attribution",
+      title: "Retail Sales Forecasting (SARIMA)",
       desc:
-        "Python uplift model and cohort view. Clean AB framework, baked-in validation and reporting.",
-      stack: ["Python", "Pandas", "scikit-learn"],
-      repo: "#",
-      demo: "#",
+        "End-to-end daily sales forecasting: baselines, SARIMA(2,1,1)x(1,1,1,7), event flags, and 30-day forward forecast with confidence intervals.",
+      stack: ["Python", "Pandas", "statsmodels"],
+      demo: "https://github.com/arsdmm/Time-Series-Analysis.git",
     },
     {
-      title: "Data Quality Monitor",
+      title: "Data Quality Monitor Dashboard",
       desc:
-        "Small service that checks freshness, null-rates and constraints; pushes Slack alerts.",
-      stack: ["Python", "SQL", "Airflow"],
-      repo: "#",
-      demo: "#",
-    },
-    {
-      title: "Warehouse Cost Optimizer",
-      desc:
-        "Partitioning + compression experiments; simple heuristics to cut storage and scan time.",
-      stack: ["SQL", "Azure", "Synapse"],
-      repo: "#",
-      demo: "#",
-    },
-    {
-      title: "Customer Segments",
-      desc:
-        "Lightweight clustering with clear business labels; exports to activation channels.",
-      stack: ["Python", "sklearn", "Power BI"],
-      repo: "#",
-      demo: "#",
-    },
-    {
-      title: "ETL Templates",
-      desc:
-        "Opinionated cookie-cutter with config-driven pipelines, tests, and logging.",
-      stack: ["Python", "dbt-like", "SQL"],
-      repo: "#",
-      demo: "#",
+        "Power BI dashboard with SQL-based DQ rule engine: thresholds, completeness/validity checks, KPI tiles, and rule-level insights.",
+      stack: ["Power BI", "SQL", "Python"],
+      demo: "https://github.com/arsdmm/Data-Quality-Business-Insights.git",
     },
   ];
 
@@ -215,7 +193,7 @@ function ProjectsGrid() {
 
   const card = {
     hidden: { opacity: 0, y: 14, scale: 0.98 },
-    show:   { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
+    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
   };
 
   return (
@@ -244,7 +222,6 @@ function ProjectsGrid() {
                 📂
               </div>
               <div className="flex items-center gap-2">
-                <IconLink href={p.repo} label="GitHub"></IconLink>
                 <IconLink href={p.demo} label="Open">↗</IconLink>
               </div>
             </div>
