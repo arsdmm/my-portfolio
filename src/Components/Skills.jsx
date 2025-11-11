@@ -33,11 +33,9 @@ export default function Skills() {
 
   return (
     <section id="skills" className="relative w-full bg-black text-white">
-      {/* нежная виньетка как в About */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_35%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)]" />
 
       <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
-        {/* header row */}
         <div className="mb-8 flex items-center gap-4">
           <span className="text-slate-400">/</span>
           <h2 className="text-3xl md:text-4xl font-semibold">Skills</h2>
@@ -55,7 +53,6 @@ export default function Skills() {
           Calm visuals, reproducible pipelines, and a bias toward maintainable choices.
         </motion.p>
 
-        {/* сетка карточек */}
         <motion.div
           variants={grid}
           initial="hidden"
@@ -77,10 +74,8 @@ export default function Skills() {
                 group
               "
             >
-              {/* внутренний мягкий градиент */}
               <div className="absolute inset-0 bg-[radial-gradient(85%_60%_at_50%_40%,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_60%)]" />
 
-              {/* плавная подсветка по ховеру */}
               <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[conic-gradient(from_180deg_at_50%_50%,rgba(255,255,255,0.18)_0deg,rgba(255,255,255,0)_120deg,rgba(255,255,255,0)_240deg,rgba(255,255,255,0.18)_360deg)]" />
 
               <div className="relative z-10 flex flex-col items-center justify-center px-4 py-7">
@@ -99,7 +94,6 @@ export default function Skills() {
           ))}
         </motion.div>
 
-        {/* тонкий разделитель снизу */}
         <div className="mt-12 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       </div>
     </section>

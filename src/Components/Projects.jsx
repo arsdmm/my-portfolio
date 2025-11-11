@@ -60,7 +60,6 @@ function MiniHero() {
     const newIdx = (next + slides.length) % slides.length;
     dirRef.current = next > index ? 1 : -1;
 
-    // уход
     await controls.start({
       x: dirRef.current * -40,
       opacity: 0,
@@ -68,7 +67,6 @@ function MiniHero() {
       transition: { duration: 0.25, ease: "easeOut" },
     });
     setIndex(newIdx);
-    // приход
     controls.set({ x: dirRef.current * 40, opacity: 0, filter: "blur(6px)" });
     await controls.start({
       x: 0,
@@ -84,7 +82,6 @@ function MiniHero() {
       bg-white/[0.03] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
       px-6 md:px-10 py-10 md:py-12
     ">
-      {/* туман/вспышки */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_70%_0%,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0)_50%)]" />
 
       <motion.div
@@ -118,13 +115,11 @@ function MiniHero() {
             bg-gradient-to-b from-white/5 to-transparent
             shadow-[0_10px_50px_rgba(0,0,0,0.35)]
           ">
-            {/* placeholder иллюстрации / графа */}
             <div className="h-full w-full rounded-2xl bg-[radial-gradient(80%_80%_at_60%_20%,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0)_55%)]" />
           </div>
         </motion.div>
       </motion.div>
 
-      {/* стрелки */}
       <div className="absolute right-4 md:right-6 bottom-4 md:bottom-6 flex items-center gap-2">
         <button
           onClick={() => goTo(index - 1)}
@@ -142,7 +137,6 @@ function MiniHero() {
         </button>
       </div>
 
-      {/* точки */}
       <div className="absolute left-1/2 -translate-x-1/2 bottom-4 md:bottom-6 flex gap-2">
         {slides.map((_, i) => (
           <button
@@ -158,10 +152,6 @@ function MiniHero() {
     </div>
   );
 }
-
-/* --------------------------------------------- */
-/* Grid с карточками — чистая и очень читабельная */
-/* --------------------------------------------- */
 function ProjectsGrid() {
   const projects = [
     {
@@ -246,7 +236,6 @@ function ProjectsGrid() {
             flex flex-col
           "
         >
-          {/* подсветка */}
           <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 bg-[conic-gradient(from_180deg_at_50%_50%,rgba(255,255,255,0.16)_0deg,rgba(255,255,255,0)_120deg,rgba(255,255,255,0)_240deg,rgba(255,255,255,0.16)_360deg)]" />
 
           <div className="p-5 md:p-6 flex-1 flex flex-col">
@@ -280,7 +269,6 @@ function ProjectsGrid() {
   );
 }
 
-/* маленькая кнопка-иконка */
 function IconLink({ href, label, children }) {
   return (
     <a
