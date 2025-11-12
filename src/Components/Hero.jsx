@@ -154,7 +154,8 @@ export default function Hero() {
         </a>
         <a
           href="/resume/Dmytro_Litvinov_Resume.pdf"
-          download
+          target="_blank"
+          rel="noopener noreferrer"
           className="hover:text-gray-400 transition-colors"
         >
           Resume
