@@ -131,7 +131,7 @@ export default function Hero() {
         </motion.a>
       </div>
 
-      {/* header (unchanged) */}
+      {/* header (updated) */}
       <header
         className={
           "absolute top-0 left-0 w-full flex justify-center gap-8 py-6 " +
@@ -142,7 +142,25 @@ export default function Hero() {
         <a href="#about" className="hover:text-gray-400 transition-colors">About</a>
         <a href="#skills" className="hover:text-gray-400 transition-colors">Skills</a>
         <a href="#projects" className="hover:text-gray-400 transition-colors">Projects</a>
+
+        {/* new links */}
+        <a
+          href="https://www.linkedin.com/in/dmytro-litvinov-2b319b235"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-gray-400 transition-colors"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="/resume/Dmytro_Litvinov_Resume.pdf"
+          download
+          className="hover:text-gray-400 transition-colors"
+        >
+          Resume
+        </a>
       </header>
+
     </section>
   );
 }
