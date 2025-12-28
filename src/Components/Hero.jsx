@@ -96,7 +96,7 @@ export default function Hero() {
             (showInfo ? "animate-fade-up [animation-delay:0.05s]" : "opacity-0 translate-y-4")
           }
         >
-          I'm turning raw data into real insights.
+          I turn raw data and test results into real insights.
         </p>
 
         {/* bio */}
@@ -106,8 +106,8 @@ export default function Hero() {
             (showInfo ? "animate-fade-up [animation-delay:0.18s]" : "opacity-0 translate-y-4")
           }
         >
-          I'm a data analyst based in Toronto. I'm passionate about large-scale, high-impact work,
-          where I turn messy data into meaningful decisions and minimal, easy-to-read visuals.
+            I'm a QA Engineer and Data Analyst based in Toronto. I work at the intersection of testing and analytics, 
+            ensuring data quality, validating systems, and transforming messy data into reliable insights and clear, decision-ready visuals.
         </p>
 
         {/* button */}
