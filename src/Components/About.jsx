@@ -23,10 +23,10 @@ export default function About() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-slate-300 leading-relaxed max-w-3xl"
         >
-          I’m a data analyst based in Toronto. I enjoy large-scale, high-impact work —
-          turning messy datasets into meaningful decisions and minimal, readable visuals.
-          My focus is clarity, performance and maintainability. I like problems where
-          the output is obvious, the process is careful, and the result is calm.
+          I’m a data analyst and QA engineer based in Toronto. I enjoy large-scale, high-impact work,
+          turning messy datasets and system outputs into meaningful decisions and minimal, readable visuals.
+          My focus is clarity, performance, and maintainability. I like problems where the output is obvious,
+          the process is careful, and the result is calm.
         </motion.p>
 
         {/* stats row */}
