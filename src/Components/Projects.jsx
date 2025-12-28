@@ -180,6 +180,20 @@ function ProjectsGrid() {
       stack: ["Power BI", "SQL", "Python"],
       demo: "https://github.com/arsdmm/Data-Quality-Business-Insights.git",
     },
+    {
+      title: "QA UI Automation – Playwright (SauceDemo)",
+      desc:
+        "End-to-end UI automation framework built with Playwright and pytest. Covers login scenarios, cart logic, and full checkout flow using Page Object Model, reusable fixtures, and clean test architecture.",
+      stack: ["Python", "Playwright", "pytest", "POM"],
+      demo: "https://github.com/arsdmm/QA-playwright-saucedemo.git",
+    },
+    {
+      title: "QA API Automation – Mock-based REST Testing",
+      desc:
+        "Client-based API automation framework using pytest, requests, and Pydantic. Focused on contract validation, mock-based testing with responses, and clean separation between HTTP layer and business logic.",
+      stack: ["Python", "pytest", "requests", "Pydantic", "responses"],
+      demo: "https://github.com/arsdmm/QA-api-automation-reqres.git",
+    },
   ];
 
   const grid = {
