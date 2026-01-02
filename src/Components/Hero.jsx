@@ -153,7 +153,7 @@ export default function Hero() {
           LinkedIn
         </a>
         <a
-          href="/resume/Dmytro_Litvinov_Resume.pdf"
+          href="/resume/QA-Resume-Dmytro-Litvinov.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-gray-400 transition-colors"
